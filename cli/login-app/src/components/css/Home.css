@@ -1,0 +1,10 @@
+.homepage {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+}
+
+.content {
+    text-align: center; /* Center content inside */
+}

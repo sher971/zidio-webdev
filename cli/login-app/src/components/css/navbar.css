@@ -1,0 +1,13 @@
+/* custom.css */
+.navbar-custom {
+    background-color: navy;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: white;
+}
+
+.navbar-custom .nav-link:hover {
+    color: lightgray; /* Optional: To change the color on hover */
+}

@@ -1,0 +1,73 @@
+/* Ensure the entire page background is white */
+body {
+    background-color: #ffffff;
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+/* Styling for the signup container */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Styling for the image container */
+.signup-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Image styling */
+.image {
+    width: 750px;
+    height: 750px;
+}
+
+/* Styling for the form container */
+.signup-form {
+    flex: 1;
+    padding: 20px;
+    max-width: 400px;
+    background-color: #e7e7e7;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 50px;
+}
+
+.signup-form h1 {
+    margin-bottom: 20px;
+}
+
+/* Input and button styling */
+.signup-form input,
+.signup-form button {
+    display: block;
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+/* Button specific styling */
+.signup-form button {
+    background-color: #ff6600; /* Initial button color */
+    color: #fff; /* Text color */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.signup-form button:hover {
+    background-color: #ff4500; /* Button color on hover */
+}
+
+/* Error message styling */
+.signup-form .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
