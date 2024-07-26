@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Maker</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+      padding: 30px;
+    }
+    .btn-group {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    .header-text {
+      color: #007bff;
+    }
+    .submit-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .experience-container, .project-container, .certificate-container, .training-container, .volunteer-container {
+      margin-bottom: 1rem;
+    }
+    .experience-item, .project-item, .certificate-item, .training-item, .volunteer-item {
+      margin-bottom: 0.5rem;
+    }
+    .btn-add, .btn-remove {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="header-text">Resume Maker</h2>
+  <p class="text-primary">You are using <%= theme %> theme</p>
+  <form action="/resume-maker" class="text-primary form" method="POST" id="resume-form">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" id="name">
+      </div>
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="text" name="phone" class="form-control" id="phone">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" name="email" class="form-control" id="email">
+      </div>
+     
+    <div class="mb-3">
+      <label for="jobTitle" class="form-label">Job Title</label>
+      <input type="text" id="jobTitle" name="jobTitle" class="form-control" placeholder="e.g. Software Engineer">
+    </div>
+    <div class="mb-3">
+      <label for="about" class="form-label">Education</label>
+      <textarea class="form-control" name="about" id="about" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="languages" class="form-label">Languages</label>
+      <input type="text" placeholder="Comma-separated list" name="languages" class="form-control" id="languages">
+    </div>
+    <div class="mb-3">
+      <label for="frameworks" class="form-label">Frameworks</label>
+      <input type="text" id="frameworks" name="frameworks" class="form-control" placeholder="e.g. React, Angular">
+    </div>
+    <div class="mb-3">
+      <label for="tools" class="form-label">Tools</label>
+      <input type="text" id="tools" name="tools" class="form-control" placeholder="e.g. Git, Docker">
+    </div>
+    <!-- Soft Skills section -->
+<div class="mb-3">
+  <label for="softSkills" class="form-label">Soft Skills</label>
+  <input type="text" id="softSkills" name="softSkills" class="form-control" placeholder="Comma-separated list (e.g., Teamwork, Communication)">
+</div>
+
+    
+    <!-- Experience section -->
+    <div class="experience-container">
+      <label for="experience" class="form-label">Experience</label>
+      <div id="experience-fields">
+        <!-- Experience fields will be added here -->
+      </div>
+      <button type="button" class="btn btn-success btn-add" onclick="addExperience()">Add Experience</button>
+    </div>
+    
+    <!-- Projects section -->
+    <div class="project-container">
+      <label for="projects" class="form-label">Projects</label>
+      <div id="project-fields">
+        <!-- Project fields will be added here -->
+      </div>
+      <button type="button" class="btn btn-success btn-add" onclick="addProject()">Add Project</button>
+    </div>
+
+    <!-- Certificates section -->
+    <div class="certificate-container">
+      <label for="certificates" class="form-label">Certificates</label>
+      <div id="certificate-fields">
+        <!-- Certificate fields will be added here -->
+      </div>
+      <button type="button" class="btn btn-success btn-add" onclick="addCertificate()">Add Certificate</button>
+    </div>
+
+    <!-- Training section -->
+  
+
+    <!-- Volunteer section -->
+    <div class="volunteer-container">
+      <label for="volunteers" class="form-label">Volunteer Experience</label>
+      <div id="volunteer-fields">
+        <!-- Volunteer fields will be added here -->
+      </div>
+      <button type="button" class="btn btn-success btn-add" onclick="addVolunteer()">Add Volunteer</button>
+    </div>
+    
+    <!-- Hidden input for theme -->
+    <input type="hidden" name="theme" value="<%= theme %>">
+    <div class="submit-btn">
+      <button class="btn btn-primary" type="submit">Preview</button>
+    </div>
+  </form>
+
+  <!-- New form to handle PDF generation -->
+  <form action="/generate-pdf" method="POST" id="pdf-form">
+    <!-- Hidden inputs to capture form data -->
+    <input type="hidden" name="name" id="pdf-name">
+    <input type="hidden" name="phone" id="pdf-phone">
+    <input type="hidden" name="email" id="pdf-email">
+    <input type="hidden" name="birth" id="pdf-birth">
+    <input type="hidden" name="gender" id="pdf-gender">
+    <input type="hidden" name="jobTitle" id="pdf-jobTitle">
+    <input type="hidden" name="about" id="pdf-about">
+    <input type="hidden" name="languages" id="pdf-languages">
+    <input type="hidden" name="frameworks" id="pdf-frameworks">
+    <input type="hidden" name="tools" id="pdf-tools">
+    <input type="hidden" name="experienceYears" id="pdf-experienceYears">
+    <input type="hidden" name="experienceDetails" id="pdf-experienceDetails">
+    <input type="hidden" name="projectTitles" id="pdf-projectTitles">
+    <input type="hidden" name="projectDescriptions" id="pdf-projectDescriptions">
+    <input type="hidden" name="certificateTitles" id="pdf-certificateTitles">
+    <input type="hidden" name="certificateDescriptions" id="pdf-certificateDescriptions">
+    <input type="hidden" name="volunteerTitles" id="pdf-volunteerTitles">
+    <input type="hidden" name="volunteerDescriptions" id="pdf-volunteerDescriptions">
+    <input type="hidden" name="softSkills" id="pdf-softSkills">
+
+   
+  </form>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom Script -->
+<script>
+  let experienceCount = 0;
+  let projectCount = 0;
+  let certificateCount = 0;
+  let trainingCount = 0;
+  let volunteerCount = 0;
+
+  function addExperience() {
+    experienceCount++;
+    const experienceFields = document.getElementById('experience-fields');
+    
+    const experienceHTML = `
+      <div class="experience-item">
+        <input type="text" name="experienceYears[]" class="form-control mb-2" placeholder="Year (e.g., 2021)">
+        <input type="text" name="experienceDetails[]" class="form-control mb-2" placeholder="Experience Details (e.g., Developed a new feature)">
+        <button type="button" class="btn btn-danger btn-remove" onclick="removeExperience(this)">Remove</button>
+      </div>
+    `;
+    
+    experienceFields.insertAdjacentHTML('beforeend', experienceHTML);
+  }
+
+  function removeExperience(button) {
+    button.parentElement.remove();
+  }
+
+  function addProject() {
+    projectCount++;
+    const projectFields = document.getElementById('project-fields');
+    
+    const projectHTML = `
+      <div class="project-item">
+        <input type="text" name="projectTitles[]" class="form-control mb-2" placeholder="Project Title (e.g., AI-based Chatbot)">
+        <input type="text" name="projectDescriptions[]" class="form-control mb-2" placeholder="Project Description (e.g., Developed a chatbot using NLP techniques)">
+        <button type="button" class="btn btn-danger btn-remove" onclick="removeProject(this)">Remove</button>
+      </div>
+    `;
+    
+    projectFields.insertAdjacentHTML('beforeend', projectHTML);
+  }
+
+  function removeProject(button) {
+    button.parentElement.remove();
+  }
+
+  function addCertificate() {
+    certificateCount++;
+    const certificateFields = document.getElementById('certificate-fields');
+    
+    const certificateHTML = `
+      <div class="certificate-item">
+        <input type="text" name="certificateTitles[]" class="form-control mb-2" placeholder="Certificate Title (e.g., AWS Certified)">
+        <input type="text" name="certificateDescriptions[]" class="form-control mb-2" placeholder="Certificate Description (e.g., AWS Certified Solutions Architect)">
+        <button type="button" class="btn btn-danger btn-remove" onclick="removeCertificate(this)">Remove</button>
+      </div>
+    `;
+    
+    certificateFields.insertAdjacentHTML('beforeend', certificateHTML);
+  }
+
+  function removeCertificate(button) {
+    button.parentElement.remove();
+  }
+
+ 
+  function addVolunteer() {
+    volunteerCount++;
+    const volunteerFields = document.getElementById('volunteer-fields');
+    
+    const volunteerHTML = `
+      <div class="volunteer-item">
+        <input type="text" name="volunteerTitles[]" class="form-control mb-2" placeholder="Volunteer Title (e.g., Community Organizer)">
+        <input type="text" name="volunteerDescriptions[]" class="form-control mb-2" placeholder="Volunteer Description (e.g., Organized community events and activities)">
+        <button type="button" class="btn btn-danger btn-remove" onclick="removeVolunteer(this)">Remove</button>
+      </div>
+    `;
+    
+    volunteerFields.insertAdjacentHTML('beforeend', volunteerHTML);
+  }
+
+  function removeVolunteer(button) {
+    button.parentElement.remove();
+  }
+
+  function populatePDFForm() {
+  document.getElementById('pdf-name').value = document.getElementById('name').value;
+  document.getElementById('pdf-phone').value = document.getElementById('phone').value;
+  document.getElementById('pdf-email').value = document.getElementById('email').value;
+  document.getElementById('pdf-birth').value = document.getElementById('birth').value;
+  document.getElementById('pdf-gender').value = document.getElementById('gender').value;
+  document.getElementById('pdf-jobTitle').value = document.getElementById('jobTitle').value;
+  document.getElementById('pdf-about').value = document.getElementById('about').value;
+  document.getElementById('pdf-languages').value = document.getElementById('languages').value;
+  document.getElementById('pdf-frameworks').value = document.getElementById('frameworks').value;
+  document.getElementById('pdf-tools').value = document.getElementById('tools').value;
+  
+  // Gather soft skills data
+  document.getElementById('pdf-softSkills').value = document.getElementById('softSkills').value;
+
+  // Gather experience data
+  const experienceYears = Array.from(document.querySelectorAll('input[name="experienceYears[]"]')).map(input => input.value).join(',');
+  const experienceDetails = Array.from(document.querySelectorAll('input[name="experienceDetails[]"]')).map(input => input.value).join(',');
+
+  document.getElementById('pdf-experienceYears').value = experienceYears;
+  document.getElementById('pdf-experienceDetails').value = experienceDetails;
+
+  // Gather project data
+  const projectTitles = Array.from(document.querySelectorAll('input[name="projectTitles[]"]')).map(input => input.value).join(',');
+  const projectDescriptions = Array.from(document.querySelectorAll('input[name="projectDescriptions[]"]')).map(input => input.value).join(',');
+
+  document.getElementById('pdf-projectTitles').value = projectTitles;
+  document.getElementById('pdf-projectDescriptions').value = projectDescriptions;
+
+  // Gather certificate data
+  const certificateTitles = Array.from(document.querySelectorAll('input[name="certificateTitles[]"]')).map(input => input.value).join(',');
+  const certificateDescriptions = Array.from(document.querySelectorAll('input[name="certificateDescriptions[]"]')).map(input => input.value).join(',');
+
+  document.getElementById('pdf-certificateTitles').value = certificateTitles;
+  document.getElementById('pdf-certificateDescriptions').value = certificateDescriptions;
+
+  // Gather training data
+  const trainingTitles = Array.from(document.querySelectorAll('input[name="trainingTitles[]"]')).map(input => input.value).join(',');
+  const trainingDescriptions = Array.from(document.querySelectorAll('input[name="trainingDescriptions[]"]')).map(input => input.value).join(',');
+
+  document.getElementById('pdf-trainingTitles').value = trainingTitles;
+  document.getElementById('pdf-trainingDescriptions').value = trainingDescriptions;
+
+  // Gather volunteer data
+  const volunteerTitles = Array.from(document.querySelectorAll('input[name="volunteerTitles[]"]')).map(input => input.value).join(',');
+  const volunteerDescriptions = Array.from(document.querySelectorAll('input[name="volunteerDescriptions[]"]')).map(input => input.value).join(',');
+
+  document.getElementById('pdf-volunteerTitles').value = volunteerTitles;
+  document.getElementById('pdf-volunteerDescriptions').value = volunteerDescriptions;
+}
+
+</script>
+
+</body>
+</html>
